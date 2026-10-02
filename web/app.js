@@ -186,7 +186,8 @@ async function reviewAnswer() {
           job: $('job').value.trim(),
           context: $('context').value.trim(),
           question: questions[state.index].prompt,
-          answer
+          answer,
+          mode: document.body.dataset.mode || 'practice'
         })
       });
 
@@ -198,7 +199,8 @@ async function reviewAnswer() {
     state.history.unshift({
       kind: questions[state.index].label,
       question: questions[state.index].prompt,
-      score: data.score
+      score: data.score,
+      rubric: data.rubric || null
     });
     state.history = state.history.slice(0, 8);
     localStorage.setItem('local-interview-coach-history', JSON.stringify(state.history));
