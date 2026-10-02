@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="650" viewBox="0 0 1400 650">
+<defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#86efac"/><stop offset="1" stop-color="#7dd3fc"/></linearGradient></defs>
+<rect width="1400" height="650" rx="34" fill="#070b14"/>
+<text x="80" y="92" fill="#95a2b9" font-family="Inter,Arial" font-size="18" font-weight="700" letter-spacing="3">PRIVACY MODEL</text>
+<text x="80" y="145" fill="#f4f7fb" font-family="Inter,Arial" font-size="42" font-weight="800">What leaves the laptop?</text>
+<rect x="80" y="205" width="560" height="330" rx="28" fill="#0e1422" stroke="#ffffff" stroke-opacity=".10"/>
+<text x="120" y="255" fill="#86efac" font-family="Inter,Arial" font-size="15" font-weight="800">REAL AI MODE</text>
+<text x="120" y="305" fill="#f4f7fb" font-family="Inter,Arial" font-size="25" font-weight="750">Local by construction</text>
+<text x="120" y="350" fill="#95a2b9" font-family="Inter,Arial" font-size="18">Interview answer → localhost → Ollama → Gemma</text>
+<text x="120" y="392" fill="#95a2b9" font-family="Inter,Arial" font-size="18">Session notes → browser localStorage</text>
+<text x="120" y="434" fill="#95a2b9" font-family="Inter,Arial" font-size="18">No required account or cloud AI API</text>
+<rect x="710" y="205" width="610" height="330" rx="28" fill="#0e1422" stroke="#ffffff" stroke-opacity=".10"/>
+<text x="750" y="255" fill="#7dd3fc" font-family="Inter,Arial" font-size="15" font-weight="800">HOSTED DEMO</text>
+<text x="750" y="305" fill="#f4f7fb" font-family="Inter,Arial" font-size="25" font-weight="750">Public UI without a privacy lie</text>
+<text x="750" y="350" fill="#95a2b9" font-family="Inter,Arial" font-size="18">Render serves the static interface</text>
+<text x="750" y="392" fill="#95a2b9" font-family="Inter,Arial" font-size="18">Hosted feedback is clearly sample data</text>
+<text x="750" y="434" fill="#95a2b9" font-family="Inter,Arial" font-size="18">Real AI mode stays local on the user's machine</text>
+<rect x="80" y="575" width="1240" height="4" rx="2" fill="url(#g)"/>
+<text x="80" y="610" fill="#6e7b92" font-family="Inter,Arial" font-size="14">The privacy boundary is a product feature, not just a deployment choice.</text>
+</svg>
