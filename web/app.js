@@ -1,8 +1,12 @@
 const questions = [
   { label: 'Behavioral', prompt: 'Tell me about a project where something went wrong. What did you do next?', hint: 'Use situation → decision → action → result.' },
   { label: 'Technical', prompt: 'How would you design a URL shortener for production traffic?', hint: 'State requirements before jumping into components.' },
-  { label: 'Follow-up', prompt: 'What trade-off did you make in that design, and what would you change at 10× scale?', hint: 'A good follow-up exposes what you chose not to optimize.' },
-  { label: 'Behavioral', prompt: 'Tell me about a time you disagreed with a teammate. How did you resolve it?', hint: 'Focus on your reasoning and the outcome, not the drama.' }
+  { label: 'System Design', prompt: 'Design a notification system that can handle millions of events per day.', hint: 'Start with requirements, scale, failure modes, and trade-offs.' },
+  { label: 'Projects', prompt: 'Walk me through the hardest technical decision you made in a project.', hint: 'Explain the constraint, options, decision, and consequence.' },
+  { label: 'Behavioral', prompt: 'Tell me about a time you disagreed with a teammate. How did you resolve it?', hint: 'Focus on your reasoning and the outcome, not the drama.' },
+  { label: 'Technical', prompt: 'What happens from the moment you enter a URL until a web page appears?', hint: 'Keep the layers in order and call out where latency can hide.' },
+  { label: 'Leadership', prompt: 'Tell me about a time you had to move a team forward when you did not have formal authority.', hint: 'Show influence, communication, and the outcome.' },
+  { label: 'Debugging', prompt: 'A production endpoint suddenly becomes 10× slower. How do you investigate?', hint: 'Think observability, hypotheses, isolation, and rollback.' }
 ];
 
 const HOSTED_DEMO = !['localhost', '127.0.0.1'].includes(location.hostname);
@@ -82,6 +86,15 @@ function resetFeedback() {
 
 function renderHistory() {
   $('sessionCount').textContent = `${state.history.length} ${state.history.length === 1 ? 'attempt' : 'attempts'}`;
+  const scores = state.history.map((item) => Number(item.score)).filter(Number.isFinite);
+  const avg = scores.length ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1) : '—';
+  const best = scores.length ? Math.max(...scores).toString() : '—';
+  const recent = scores.slice(0, 3);
+  const older = scores.slice(3, 6);
+  const trend = recent.length && older.length ? (recent.reduce((a,b)=>a+b,0)/recent.length - older.reduce((a,b)=>a+b,0)/older.length) : null;
+  $('avgScore').textContent = avg === '—' ? '—' : `${avg}/10`;
+  $('bestScore').textContent = best === '—' ? '—' : `${best}/10`;
+  $('trendScore').textContent = trend === null ? '—' : `${trend >= 0 ? '+' : ''}${trend.toFixed(1)}`;
   if (!state.history.length) {
     $('history').innerHTML = '<p class="history-empty">No answers yet. Start with one question above.</p>';
     return;
@@ -142,6 +155,7 @@ function showFeedback(data) {
     <div class="next wide">
       <h3>Next follow-up</h3>
       <p>${escapeHtml(data.nextQuestion)}</p>
+      <div class="follow-up-actions"><button class="primary compact" id="followUpButton">Ask this follow-up</button></div>
     </div>
   `;
 }
@@ -205,6 +219,21 @@ async function reviewAnswer() {
     state.history = state.history.slice(0, 8);
     localStorage.setItem('local-interview-coach-history', JSON.stringify(state.history));
     renderHistory();
+
+    const followUpButton = $('followUpButton');
+    if (followUpButton) {
+      followUpButton.addEventListener('click', () => {
+        $('questionKind').textContent = 'Follow-up';
+        $('questionText').textContent = data.nextQuestion;
+        $('answerHint').textContent = 'This question was generated from your previous answer.';
+        state.index = -1;
+        $('answer').value = '';
+        updateCharCount();
+        stopTimer(true);
+        $('answer').focus();
+        window.scrollTo({ top: document.querySelector('.question-card').offsetTop - 20, behavior: 'smooth' });
+      }, { once: true });
+    }
 
     document.querySelector('.feedback-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch (error) {
