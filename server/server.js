@@ -23,7 +23,7 @@ async function readBody(req) {
 }
 
 function promptFor({ job, context, question, answer }) {
-  return `You are a rigorous but kind interview coach. Review one candidate answer for the target role below.\n\nTarget role: ${job}\nCandidate goal: ${context}\nQuestion: ${question}\nAnswer: ${answer}\n\nReturn ONLY valid JSON with this schema:\n{"score":number,"summary":string,"strengths":string[],"improvements":string[],"nextQuestion":string}\nScore 1-10. Be specific. Reward clarity, structure, technical correctness, ownership, trade-off awareness, and measurable results. Do not invent achievements.`;
+  return `You are a rigorous but kind interview coach. Review one candidate answer for the target role below.\n\nTarget role: ${job}\nCandidate goal: ${context}\nQuestion: ${question}\nAnswer: ${answer}\n\nReturn ONLY valid JSON with this schema:\n{"score":number,"summary":string,"strengths":string[],"improvements":string[],"rubric":{"structure":number,"specificity":number,"ownership":number,"reasoning":number,"communication":number},"nextQuestion":string}\nScore 1-10. Be specific. Reward clarity, structure, technical correctness, ownership, trade-off awareness, and measurable results. Do not invent achievements.`;
 }
 
 async function review(payload) {
