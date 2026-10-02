@@ -26,16 +26,49 @@ const demoAnswer = "I was working on a backend service for a college project whe
 
 const state = {
   index: 0,
+  timer: 90,
+  timerId: null,
   history: JSON.parse(localStorage.getItem('local-interview-coach-history') || '[]')
 };
 
 const $ = (id) => document.getElementById(id);
+
+function formatTime(totalSeconds) {
+  const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+  const seconds = (totalSeconds % 60).toString().padStart(2, '0');
+  return `${minutes}:${seconds}`;
+}
+
+function stopTimer(reset = true) {
+  if (state.timerId) clearInterval(state.timerId);
+  state.timerId = null;
+  if (reset) state.timer = document.body.dataset.mode === 'pressure' ? 60 : 90;
+  $('timer').textContent = formatTime(state.timer);
+  $('timerButton').textContent = 'Start timer';
+  $('timerButton').classList.remove('timer-live');
+}
+
+function startTimer() {
+  if (state.timerId) return;
+  if (state.timer <= 0) state.timer = document.body.dataset.mode === 'pressure' ? 60 : 90;
+  $('timerButton').textContent = 'Pause timer';
+  $('timerButton').classList.add('timer-live');
+  state.timerId = setInterval(() => {
+    state.timer -= 1;
+    $('timer').textContent = formatTime(state.timer);
+    if (state.timer <= 0) {
+      stopTimer(false);
+      $('timerButton').textContent = 'Time done';
+    }
+  }, 1000);
+}
 
 function renderQuestion() {
   const q = questions[state.index];
   $('questionKind').textContent = q.label;
   $('questionText').textContent = q.prompt;
   $('answerHint').textContent = q.hint;
+  stopTimer(true);
   $('answer').value = '';
   updateCharCount();
   resetFeedback();
@@ -182,6 +215,17 @@ async function reviewAnswer() {
   }
 }
 
+$('timerButton').addEventListener('click', () => {
+  if (state.timerId) {
+    clearInterval(state.timerId);
+    state.timerId = null;
+    $('timerButton').textContent = 'Resume timer';
+    $('timerButton').classList.remove('timer-live');
+  } else {
+    startTimer();
+  }
+});
+
 $('nextQuestion').addEventListener('click', () => {
   state.index = (state.index + 1) % questions.length;
   renderQuestion();
@@ -212,6 +256,7 @@ document.querySelectorAll('.mode').forEach((button) => {
     document.querySelectorAll('.mode').forEach((item) => item.classList.remove('active'));
     button.classList.add('active');
     document.body.dataset.mode = button.dataset.mode;
+    stopTimer(true);
   });
 });
 
