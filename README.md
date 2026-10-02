@@ -18,8 +18,9 @@ The project is intentionally narrow. It is not a generic chatbot and it does not
 
 - **Open-weight AI at the core:** Gemma 3 runs through Ollama for the real application.
 - **Private by design:** interview answers stay on the user's machine in real AI mode.
-- **Useful feedback:** the model returns a score, strengths, improvements, a five-part signal rubric, and a follow-up question.
+- **Adaptive coaching loop:** the model returns a score, strengths, improvements, a five-part signal rubric, and a follow-up question that can immediately become the next prompt.
 - **Pressure mode:** a 60-second timer makes the practice closer to a real interview.
+- **Session signals:** average score, best score, and recent trend make improvement visible.
 - **Session memory:** recent attempts are saved locally in the browser.
 - **Honest hosted demo:** Render hosts the UI, while the public demo uses clearly labeled sample feedback instead of pretending a private local model is running in the cloud.
 
