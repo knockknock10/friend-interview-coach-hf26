@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#070b14" />
+  <meta name="description" content="Local-first interview practice powered by an open-weight model." />
+  <title>Local Interview Coach</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-wrap">
+        <div class="logo">L</div>
+        <div><div class="brand">Local Interview Coach</div><div class="tagline">practice privately · improve deliberately</div></div>
+      </div>
+      <div class="status"><span class="status-dot"></span><span id="runtimeStatus">checking local model…</span></div>
+    </header>
+
+    <main class="page">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">A small tool for a real friend</p>
+          <h1>Interview practice without the awkward audience.</h1>
+          <p class="hero-copy">A local AI coach that reviews answers, challenges trade-offs, and keeps practice notes on your machine.</p>
+        </div>
+        <div class="hero-chip"><span>MODEL</span><strong>Gemma 3 · local</strong></div>
+      </section>
+
+      <div class="grid">
+        <section class="panel setup">
+          <div class="section-heading"><div><span class="section-kicker">01</span><h2>Set the room</h2></div><span class="mini-note">nothing leaves your laptop</span></div>
+          <label>Target role<input id="job" value="Backend / Software Engineering internship" /></label>
+          <label>What are you trying to improve?<textarea id="context" rows="4">I want to practice explaining projects clearly, defending design choices, and handling follow-up questions.</textarea></label>
+          <div class="mode-row"><button class="mode active" data-mode="practice">practice</button><button class="mode" data-mode="pressure">pressure</button></div>
+        </section>
+
+        <section class="panel question-card">
+          <div class="section-heading"><div><span class="section-kicker">02</span><h2>Question</h2></div><span class="question-kind" id="questionKind">Behavioral</span></div>
+          <div class="question" id="questionText">Tell me about a project where something went wrong. What did you do next?</div>
+          <textarea id="answer" class="answer-box" rows="10" placeholder="Answer like you're already in the interview…"></textarea>
+          <div class="actions"><button class="ghost" id="nextQuestion">New question</button><button class="primary" id="reviewAnswer">Review my answer</button></div>
+        </section>
+      </div>
+
+      <section class="panel feedback-panel">
+        <div class="section-heading"><div><span class="section-kicker">03</span><h2>Coach notes</h2></div><div class="score" id="score"></div></div>
+        <div id="feedback" class="empty-state"><div class="empty-icon">◎</div><p>Your feedback appears here after you submit an answer.</p><span>Tip: strong answers usually show situation → decision → action → result.</span></div>
+      </section>
+
+      <section class="panel history-panel">
+        <div class="section-heading"><h2>Session memory</h2><span class="mini-note">stored in this browser</span></div>
+        <div id="history"><p class="history-empty">No answers yet. Start with one question above.</p></div>
+      </section>
+    </main>
+
+    <footer class="footer">Built local-first with an open-weight model. No account. No interview transcript sent to a closed AI API.</footer>
+  </div>
+  <script src="./app.js"></script>
+</body>
+</html>
