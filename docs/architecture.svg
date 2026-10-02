@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="700" viewBox="0 0 1400 700">
+<defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#7dd3fc"/><stop offset="1" stop-color="#a78bfa"/></linearGradient><filter id="s"><feDropShadow dx="0" dy="18" stdDeviation="22" flood-opacity=".28"/></filter></defs>
+<rect width="1400" height="700" rx="34" fill="#070b14"/>
+<text x="80" y="92" fill="#95a2b9" font-family="Inter,Arial" font-size="18" font-weight="700" letter-spacing="3">LOCAL INTERVIEW COACH · ARCHITECTURE</text>
+<text x="80" y="145" fill="#f4f7fb" font-family="Inter,Arial" font-size="42" font-weight="800">The AI boundary is deliberately local.</text>
+<g filter="url(#s)">
+<rect x="80" y="205" width="360" height="360" rx="28" fill="#0e1422" stroke="#ffffff" stroke-opacity=".10"/>
+<text x="120" y="255" fill="#7dd3fc" font-family="Inter,Arial" font-size="15" font-weight="800">01 · BROWSER</text>
+<text x="120" y="302" fill="#f4f7fb" font-family="Inter,Arial" font-size="25" font-weight="750">Practice surface</text>
+<text x="120" y="350" fill="#95a2b9" font-family="Inter,Arial" font-size="18">Questions</text>
+<text x="120" y="385" fill="#95a2b9" font-family="Inter,Arial" font-size="18">Answer editor + timer</text>
+<text x="120" y="420" fill="#95a2b9" font-family="Inter,Arial" font-size="18">Rubric + feedback</text>
+<text x="120" y="455" fill="#95a2b9" font-family="Inter,Arial" font-size="18">Local session memory</text>
+<text x="120" y="510" fill="#6e7b92" font-family="Inter,Arial" font-size="14">HTML · CSS · JavaScript</text>
+<rect x="490" y="355" width="90" height="6" rx="3" fill="url(#g)"/>
+<polygon points="580,358 562,347 562,369" fill="#a78bfa"/>
+<g>
+<rect x="630" y="205" width="330" height="360" rx="28" fill="#0e1422" stroke="#ffffff" stroke-opacity=".10"/>
+<text x="670" y="255" fill="#a78bfa" font-family="Inter,Arial" font-size="15" font-weight="800">02 · LOCAL API</text>
+<text x="670" y="302" fill="#f4f7fb" font-family="Inter,Arial" font-size="25" font-weight="750">Prompt boundary</text>
+<text x="670" y="350" fill="#95a2b9" font-family="Inter,Arial" font-size="18">Input validation</text>
+<text x="670" y="385" fill="#95a2b9" font-family="Inter,Arial" font-size="18">Stable JSON contract</text>
+<text x="670" y="420" fill="#95a2b9" font-family="Inter,Arial" font-size="18">Timeout + error handling</text>
+<text x="670" y="455" fill="#95a2b9" font-family="Inter,Arial" font-size="18">Model selection</text>
+<text x="670" y="510" fill="#6e7b92" font-family="Inter,Arial" font-size="14">Node.js · localhost:8787</text>
+</g>
+<rect x="1010" y="355" width="90" height="6" rx="3" fill="url(#g)"/>
+<polygon points="1100,358 1082,347 1082,369" fill="#a78bfa"/>
+<g>
+<rect x="1150" y="205" width="170" height="360" rx="28" fill="#0e1422" stroke="#ffffff" stroke-opacity=".10"/>
+<text x="1182" y="255" fill="#86efac" font-family="Inter,Arial" font-size="15" font-weight="800">03 · MODEL</text>
+<text x="1182" y="302" fill="#f4f7fb" font-family="Inter,Arial" font-size="25" font-weight="750">Gemma 3</text>
+<text x="1182" y="350" fill="#95a2b9" font-family="Inter,Arial" font-size="18">4B default</text>
+<text x="1182" y="385" fill="#95a2b9" font-family="Inter,Arial" font-size="18">Ollama</text>
+<text x="1182" y="445" fill="#6e7b92" font-family="Inter,Arial" font-size="14">No cloud AI API</text>
+</g>
+</g>
+<text x="80" y="635" fill="#6e7b92" font-family="Inter,Arial" font-size="15">Render hosts the public UI demo; the real interview transcript stays inside the local inference path.</text>
+</svg>
