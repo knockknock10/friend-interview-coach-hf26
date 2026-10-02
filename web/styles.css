@@ -166,7 +166,7 @@ input:focus, textarea:focus { border-color: rgba(125,211,252,.42); box-shadow: 0
   .app-shell { width: min(100% - 24px, 760px); }
   .hero { gap: 22px; }
   h1 { font-size: clamp(38px, 12vw, 60px); }
-  .feedback-grid, .rubric-grid { grid-template-columns: 1fr; }
+  .feedback-grid, .rubric-grid, .session-stats { grid-template-columns: 1fr; }
   .feedback-grid .wide { grid-column: auto; }
   .footer { flex-direction: column; }
 }
