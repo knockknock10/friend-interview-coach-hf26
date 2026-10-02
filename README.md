@@ -37,6 +37,10 @@ NaN
 
 ## Architecture
 
+![Architecture](docs/architecture.svg)
+
+![Privacy boundary](docs/privacy-boundary.svg)
+
 NaN
 
 Render only hosts the static demonstration surface. The application's AI boundary stays local.
@@ -77,7 +81,7 @@ NaN
 
 This gives the UI stable data instead of rendering free-form model text.
 
-The repository also includes GitHub Actions smoke checks for:
+The repository also includes executable contract tests and GitHub Actions checks for:
 
 NaN
 
