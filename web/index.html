@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#070b14" />
-  <meta name="description" content="Local-first interview practice powered by an open-weight model." />
-  <title>Local Interview Coach</title>
+  <meta name="description" content="A local-first interview coach powered by Gemma 3." />
+  <title>Local Interview Coach — private practice</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
@@ -15,30 +15,45 @@
         <div class="logo">L</div>
         <div><div class="brand">Local Interview Coach</div><div class="tagline">practice privately · improve deliberately</div></div>
       </div>
-      <div class="status"><span class="status-dot"></span><span id="runtimeStatus">checking local model…</span></div>
+      <div class="status"><span class="status-dot"></span><span id="runtimeStatus">checking runtime…</span></div>
     </header>
 
     <main class="page">
       <section class="hero">
         <div>
-          <p class="eyebrow">A small tool for a real friend</p>
-          <h1>Interview practice without the awkward audience.</h1>
-          <p class="hero-copy">A local AI coach that reviews answers, challenges trade-offs, and keeps practice notes on your machine.</p>
+          <div class="eyebrow-row"><p class="eyebrow">Built for a friend preparing for interviews</p><span class="privacy-pill">LOCAL-FIRST</span></div>
+          <h1>Get better at answering before someone else has to ask.</h1>
+          <p class="hero-copy">A focused mock-interview loop: answer, get challenged, see where the signal is weak, then try again. The real AI coach runs on your machine.</p>
+          <div class="proof-row">
+            <span>Gemma 3</span><span>Ollama</span><span>Browser memory</span><span>No account</span>
+          </div>
         </div>
-        <div class="hero-chip"><span>MODEL</span><strong>Gemma 3 · local</strong></div>
+        <div class="hero-card">
+          <span class="hero-label">OPEN-WEIGHT MODEL</span>
+          <strong>Gemma 3 · 4B</strong>
+          <p>Local inference keeps your interview answers on-device.</p>
+          <a href="#how">How it works ↓</a>
+        </div>
+      </section>
+
+      <section class="friend-brief" id="how">
+        <div><span class="brief-label">THE FRIEND PROBLEM</span><strong>Practice is hard to repeat when every mock interview needs another person.</strong></div>
+        <p>This turns rehearsal into a 10-minute loop your friend can run alone, without uploading project stories or interview notes.</p>
       </section>
 
       <div class="grid">
         <section class="panel setup">
-          <div class="section-heading"><div><span class="section-kicker">01</span><h2>Set the room</h2></div><span class="mini-note">nothing leaves your laptop</span></div>
+          <div class="section-heading"><div><span class="section-kicker">01</span><h2>Set the room</h2></div><span class="mini-note">private by default</span></div>
           <label>Target role<input id="job" value="Backend / Software Engineering internship" /></label>
-          <label>What are you trying to improve?<textarea id="context" rows="4">I want to practice explaining projects clearly, defending design choices, and handling follow-up questions.</textarea></label>
+          <label>What are you trying to improve?<textarea id="context" rows="4">I want to explain projects clearly, defend design choices, and handle follow-up questions without rambling.</textarea></label>
           <div class="mode-row"><button class="mode active" data-mode="practice">practice</button><button class="mode" data-mode="pressure">pressure</button></div>
+          <div class="setup-actions"><button class="link-button" id="loadDemo">Load a demo answer</button><button class="link-button danger" id="clearHistory">Clear session</button></div>
         </section>
 
         <section class="panel question-card">
           <div class="section-heading"><div><span class="section-kicker">02</span><h2>Question</h2></div><span class="question-kind" id="questionKind">Behavioral</span></div>
           <div class="question" id="questionText">Tell me about a project where something went wrong. What did you do next?</div>
+          <div class="answer-meta"><span id="answerHint">Try to answer in 60–120 seconds.</span><span id="charCount">0 chars</span></div>
           <textarea id="answer" class="answer-box" rows="10" placeholder="Answer like you're already in the interview…"></textarea>
           <div class="actions"><button class="ghost" id="nextQuestion">New question</button><button class="primary" id="reviewAnswer">Review my answer</button></div>
         </section>
@@ -46,16 +61,19 @@
 
       <section class="panel feedback-panel">
         <div class="section-heading"><div><span class="section-kicker">03</span><h2>Coach notes</h2></div><div class="score" id="score"></div></div>
-        <div id="feedback" class="empty-state"><div class="empty-icon">◎</div><p>Your feedback appears here after you submit an answer.</p><span>Tip: strong answers usually show situation → decision → action → result.</span></div>
+        <div id="feedback" class="empty-state"><div class="empty-icon">◎</div><p>Your feedback appears here after you submit an answer.</p><span>Strong answers usually show situation → decision → action → result.</span></div>
       </section>
 
       <section class="panel history-panel">
-        <div class="section-heading"><h2>Session memory</h2><span class="mini-note">stored in this browser</span></div>
+        <div class="section-heading"><div><h2>Session memory</h2><span class="section-sub">A lightweight record of your practice loop.</span></div><span class="mini-note" id="sessionCount">0 attempts</span></div>
         <div id="history"><p class="history-empty">No answers yet. Start with one question above.</p></div>
       </section>
     </main>
 
-    <footer class="footer">Built local-first with an open-weight model. No account. No interview transcript sent to a closed AI API.</footer>
+    <footer class="footer">
+      <span>Real AI mode: Ollama + Gemma 3 running locally.</span>
+      <span>Hosted demo: sample feedback only, clearly labeled.</span>
+    </footer>
   </div>
   <script src="./app.js"></script>
 </body>
