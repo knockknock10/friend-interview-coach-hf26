@@ -16,7 +16,7 @@ The important part is that the interview answer stays on the laptop.
 
 ## Demo
 
-**Demo:** [ADD DEPLOYED LINK OR VIDEO LINK]
+**Demo:** https://friend-interview-coach-hf26.onrender.com
 
 The main flow is:
 
@@ -65,7 +65,7 @@ That flexibility directly supports the person's need for repeated, private rehea
 
 ## My Agent Session
 
-Optional: [ADD DEVRELAY SESSION LINK]
+Optional: add a DevRelay session link if you choose to include one.
 
 ## Prize Categories
 
