@@ -1,38 +1,58 @@
-# Demo script — 60 to 90 seconds
+# Demo script — 75 to 90 seconds
 
 ## Shot 1 — 0:00–0:10
-Open the app.
+
+Open the hosted demo.
 
 Say:
-> “I built this for a friend who is preparing for software interviews. The problem was that regular mock interviews are hard to schedule, and private AI practice usually means sending answers to a cloud service.”
 
-## Shot 2 — 0:10–0:25
-Show the role and practice goal fields.
+> "I built this for a friend preparing for software interviews. The problem wasn't finding questions. It was getting enough realistic practice without needing another person every time."
 
-Say:
-> “This version runs locally. I can choose a target role and what I actually want to improve.”
+## Shot 2 — 0:10–0:20
 
-## Shot 3 — 0:25–0:50
-Answer the first question with a short realistic answer.
-Click **Review my answer**.
+Show the target role and improvement goal.
 
 Say:
-> “The answer goes from the browser to my local Node server, then to Gemma running locally through Ollama. The model returns structured coaching feedback.”
 
-## Shot 4 — 0:50–1:05
-Show score, strengths, improvements, and next follow-up.
+> "The coach is focused on one job: making the next answer better. I can set the role, what I'm trying to improve, and choose practice or pressure mode."
 
-Say:
-> “The important part is that it doesn't just rewrite my answer. It tells me what worked, what was weak, and what question I should face next.”
+## Shot 3 — 0:20–0:40
 
-## Shot 5 — 1:05–1:20
-Click **New question**, optionally show history.
+Load the demo answer and click **Review my answer**.
 
 Say:
-> “Session history stays in the browser, so I can keep practicing without creating an account or uploading a transcript.”
 
-## Closing — 1:20–1:30
-Show the README / architecture.
+> "Instead of returning a generic paragraph, the model evaluates five interview signals: structure, specificity, ownership, reasoning, and communication."
+
+## Shot 4 — 0:40–0:58
+
+Show the score, rubric, and **Your next 10 minutes** section.
 
 Say:
-> “Open-source AI mattered here because privacy and model choice were part of the product requirement, not just a technology preference.”
+
+> "The important part is what happens after the score. It picks one focus, explains why it matters, and gives me a small drill I can use immediately."
+
+## Shot 5 — 0:58–1:10
+
+Click **Retry this answer**.
+
+Say:
+
+> "I can retry the same question using that advice instead of starting a brand-new conversation."
+
+## Shot 6 — 1:10–1:23
+
+Click **Ask the follow-up**.
+
+Say:
+
+> "Then the coach generates a follow-up from the answer itself. That's the interview loop: answer, critique, retry, follow-up."
+
+## Closing — 1:23–1:30
+
+Show the README architecture/privacy section.
+
+Say:
+
+> "The real AI path runs locally through Ollama and Gemma 3, so interview answers can stay on the user's machine. Render hosts the public demo so a judge can try it immediately."
+
