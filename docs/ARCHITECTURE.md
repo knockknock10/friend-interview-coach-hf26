@@ -23,6 +23,10 @@ Keep the user-facing workflow simple while making the AI boundary explicit and l
 └───────────────────────────────┘
 ```
 
+## Adaptive interview loop
+
+The first model response is not the end of the interaction. Its `nextQuestion` becomes the next interview prompt, so the model can probe a weak claim or ask for the missing trade-off. This keeps the agentic behavior inside the same local boundary.
+
 ## Why this boundary exists
 
 The browser should not need to know how the model is hosted. The local API owns the prompt contract, validation, and model selection. This also gives the project a clean place to add evaluations later.
