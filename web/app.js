@@ -30,6 +30,8 @@ const demoAnswer = "I was working on a backend service for a college project whe
 
 const state = {
   index: 0,
+  currentQuestion: questions[0].prompt,
+  currentKind: questions[0].label,
   timer: 90,
   timerId: null,
   history: JSON.parse(localStorage.getItem('local-interview-coach-history') || '[]')
@@ -69,6 +71,8 @@ function startTimer() {
 
 function renderQuestion() {
   const q = questions[state.index];
+  state.currentQuestion = q.prompt;
+  state.currentKind = q.label;
   $('questionKind').textContent = q.label;
   $('questionText').textContent = q.prompt;
   $('answerHint').textContent = q.hint;
@@ -199,7 +203,7 @@ async function reviewAnswer() {
         body: JSON.stringify({
           job: $('job').value.trim(),
           context: $('context').value.trim(),
-          question: questions[state.index].prompt,
+          question: state.currentQuestion,
           answer,
           mode: document.body.dataset.mode || 'practice'
         })
@@ -211,8 +215,8 @@ async function reviewAnswer() {
 
     showFeedback(data);
     state.history.unshift({
-      kind: questions[state.index].label,
-      question: questions[state.index].prompt,
+      kind: state.currentKind,
+      question: state.currentQuestion,
       score: data.score,
       rubric: data.rubric || null
     });
@@ -226,7 +230,8 @@ async function reviewAnswer() {
         $('questionKind').textContent = 'Follow-up';
         $('questionText').textContent = data.nextQuestion;
         $('answerHint').textContent = 'This question was generated from your previous answer.';
-        state.index = -1;
+        state.currentQuestion = data.nextQuestion;
+        state.currentKind = 'Follow-up';
         $('answer').value = '';
         updateCharCount();
         stopTimer(true);
