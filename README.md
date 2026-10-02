@@ -1,89 +1,95 @@
 # Local Interview Coach
 
-A local-first interview practice partner built for a friend who wants honest rehearsal without sending interview answers to a closed AI service.
+![CI](https://github.com/knockknock10/friend-interview-coach-hf26/actions/workflows/ci.yml/badge.svg)
+
+A local-first interview practice partner built for a friend preparing for software interviews.
 
 > Hacktoberfest 2026 — Weekend Challenge: Build for a Friend
 
 ## The problem
 
-Interview practice is awkward when the alternative is repeatedly asking another person to play interviewer. Local Interview Coach makes the loop private: pick a role, answer a hard question, get a critique, then face a follow-up.
+Mock interviews are useful, but they are difficult to repeat when every session needs another person to act as the interviewer. The coach turns that friction into a small daily loop:
 
-It is intentionally small. The goal is not another generic chatbot. The goal is repeated rehearsal that a friend can use alone.
+**question → answer → critique → follow-up → repeat**
 
-## Open-source AI at the core
+The project is intentionally narrow. It is not a generic chatbot and it does not try to replace an interviewer. It is a rehearsal tool.
 
-The coach runs an open-weight model locally through [Ollama](https://ollama.com/). The default model is `gemma3:4b`, and the model can be swapped without changing the UI or review API.
+## What makes it different
 
-That choice matters because the interview transcript stays on the laptop. The user can practice with real project details and rough answers without handing that material to a proprietary cloud model.
-
-## Stack
-
-- HTML/CSS/vanilla JavaScript frontend
-- Node.js local API (no runtime dependency)
-- Ollama
-- Gemma 3 (default)
-- Browser localStorage for session memory
+- **Open-weight AI at the core:** Gemma 3 runs through Ollama for the real application.
+- **Private by design:** interview answers stay on the user's machine in real AI mode.
+- **Useful feedback:** the model returns a score, strengths, improvements, a five-part signal rubric, and a follow-up question.
+- **Pressure mode:** a 60-second timer makes the practice closer to a real interview.
+- **Session memory:** recent attempts are saved locally in the browser.
+- **Honest hosted demo:** Render hosts the UI, while the public demo uses clearly labeled sample feedback instead of pretending a private local model is running in the cloud.
 
 ## Demo
 
-Hosted UI: https://friend-interview-coach-hf26.onrender.com
+**Live:** https://friend-interview-coach-hf26.onrender.com
 
-The hosted version demonstrates the interface and flow with sample feedback. The real AI review runs locally with Ollama + Gemma 3, keeping interview answers on the user's machine.
+The public demo lets judges experience the entire interaction without an account. It is clearly labeled as sample-feedback mode.
 
-## Run it locally
+For the real AI path:
 
-### 1. Install Ollama and the model
+NaN
 
-```bash
-ollama pull gemma3:4b
-```
-
-### 2. Start the local review server
-
-```bash
-npm run server
-```
-
-### 3. Start the web UI
-
-In a second terminal:
-
-```bash
-npm run web
-```
-
-Open `http://localhost:5173`.
-
-No npm package installation is required.
-
-## Swap the model
-
-```bash
-OLLAMA_MODEL=qwen3:4b npm run server
-```
+NaN
 
 ## Architecture
 
-```text
-Browser UI
-   |
-   | POST /api/review
-   v
-Local Node API
-   |
-   | Ollama HTTP API
-   v
-Open-weight model (Gemma 3)
-   |
-   v
-Structured coaching JSON
-```
+NaN
 
-No third-party AI API is required.
+Render only hosts the static demonstration surface. The application's AI boundary stays local.
 
-## Hacktoberfest build notes
+## Local setup
 
-The submission repository must be created and developed during the challenge window. Keep the commit history, demo, and any borrowed references honest and attributable.
+### 1. Install Ollama and pull the model
+
+NaN
+
+### 2. Start the review API
+
+NaN
+
+### 3. Start the web UI
+
+NaN
+
+NaN
+
+### 4. Open the app
+
+NaN
+
+### Swap the model
+
+NaN
+
+NaN
+
+Any compatible local Ollama chat model can be used as long as it can return JSON.
+
+## Engineering details
+
+The prompt contract asks the model for structured JSON:
+
+NaN
+
+This gives the UI stable data instead of rendering free-form model text.
+
+The repository also includes GitHub Actions smoke checks for:
+
+NaN
+
+NaN
+
+## Why open innovation matters
+
+For interview practice, privacy is part of the product requirement.
+
+A candidate may paste project details, failed interview answers, or notes about previous interviews. With local Gemma inference, those answers do not need to be uploaded to a closed AI provider just to receive feedback.
+
+Open-weight models also keep the coach replaceable: Gemma is the default, but the user can switch local models without rewriting the product.
 
 ## License
 
