@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "server": "node server/server.js",
+    "test": "node --test server/coaching.test.js",
     "web": "python3 -m http.server 5173 --directory web"
   }
 }
