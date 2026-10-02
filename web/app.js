@@ -277,6 +277,21 @@ $('loadDemo').addEventListener('click', () => {
   $('answer').focus();
 });
 
+$('exportSession').addEventListener('click', () => {
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    project: 'Local Interview Coach',
+    attempts: state.history
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'local-interview-coach-session.json';
+  link.click();
+  URL.revokeObjectURL(url);
+});
+
 $('clearHistory').addEventListener('click', () => {
   state.history = [];
   localStorage.removeItem('local-interview-coach-history');
