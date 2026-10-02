@@ -24,6 +24,12 @@ That choice matters because the interview transcript stays on the laptop. The us
 - Gemma 3 (default)
 - Browser localStorage for session memory
 
+## Demo
+
+Hosted UI: https://friend-interview-coach-hf26.onrender.com
+
+The hosted version demonstrates the interface and flow with sample feedback. The real AI review runs locally with Ollama + Gemma 3, keeping interview answers on the user's machine.
+
 ## Run it locally
 
 ### 1. Install Ollama and the model
