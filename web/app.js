@@ -5,6 +5,16 @@ const questions = [
   { label: 'Behavioral', prompt: 'Tell me about a time you disagreed with a teammate. How did you resolve it?' }
 ];
 
+const HOSTED_DEMO = !['localhost', '127.0.0.1'].includes(location.hostname);
+
+const demoFeedback = {
+  score: 7,
+  summary: 'Clear ownership and a useful outcome. The answer would be stronger with a sharper structure and one measurable result.',
+  strengths: ['You took ownership instead of blaming the situation.', 'The decision you described is easy to follow.'],
+  improvements: ['State the situation and constraint in one sentence first.', 'End with a concrete result or metric.'],
+  nextQuestion: 'What was the biggest trade-off in your decision, and what would you do differently now?'
+};
+
 const state = {
   index: 0,
   history: JSON.parse(localStorage.getItem('local-interview-coach-history') || '[]')
@@ -50,6 +60,10 @@ function showFeedback(data) {
 }
 
 async function checkHealth() {
+  if (HOSTED_DEMO) {
+    $('runtimeStatus').textContent = 'hosted demo · sample feedback';
+    return;
+  }
   try {
     const r = await fetch('http://localhost:8787/api/health');
     const data = await r.json();
@@ -71,16 +85,22 @@ $('reviewAnswer').addEventListener('click', async () => {
   button.disabled = true;
   button.textContent = 'Thinking locally…';
   try {
-    const response = await fetch('http://localhost:8787/api/review', {
+    let data;
+    if (HOSTED_DEMO) {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      data = demoFeedback;
+    } else {
+      const response = await fetch('http://localhost:8787/api/review', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         job: $('job').value.trim(), context: $('context').value.trim(),
         question: questions[state.index].prompt, answer
       })
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || 'Local coach unavailable');
+      });
+      data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Local coach unavailable');
+    }
     showFeedback(data);
     state.history.unshift({ kind: questions[state.index].label, question: questions[state.index].prompt, score: data.score });
     state.history = state.history.slice(0, 8);
