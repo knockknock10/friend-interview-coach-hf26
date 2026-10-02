@@ -6,24 +6,32 @@ const questions = [
   { label: 'Behavioral', prompt: 'Tell me about a time you disagreed with a teammate. How did you resolve it?', hint: 'Focus on your reasoning and the outcome, not the drama.' },
   { label: 'Technical', prompt: 'What happens from the moment you enter a URL until a web page appears?', hint: 'Keep the layers in order and call out where latency can hide.' },
   { label: 'Leadership', prompt: 'Tell me about a time you had to move a team forward when you did not have formal authority.', hint: 'Show influence, communication, and the outcome.' },
-  { label: 'Debugging', prompt: 'A production endpoint suddenly becomes 10× slower. How do you investigate?', hint: 'Think observability, hypotheses, isolation, and rollback.' }
+  { label: 'Debugging', prompt: 'A production endpoint suddenly becomes 10× slower. How do you investigate?', hint: 'Think observability, hypotheses, isolation, and rollback.' },
+  { label: 'Projects', prompt: 'Tell me about a feature you shipped that you would redesign today.', hint: 'Be specific about the original constraint and what you learned.' },
+  { label: 'Behavioral', prompt: 'Tell me about a time you received difficult feedback. What changed afterward?', hint: 'Show reflection and a concrete behavior change.' }
 ];
 
 const HOSTED_DEMO = !['localhost', '127.0.0.1'].includes(location.hostname);
 
 const demoFeedback = {
   score: 7,
-  summary: 'Clear ownership and a useful outcome. The answer has a good core story; the next step is making the evidence easier to trust.',
+  summary: 'Clear ownership and a useful outcome. The core story works; the main weakness is that the result is described qualitatively instead of with evidence.',
   strengths: [
     'You took ownership instead of blaming the situation.',
-    'The decision you described is easy to follow.'
+    'The technical cause and the action are easy to follow.'
   ],
   improvements: [
-    'State the situation and constraint in one sentence first.',
-    'End with one concrete result or metric.'
+    'State the constraint and impact before explaining the fix.',
+    'Close with a concrete result or observable change.'
   ],
   rubric: { structure: 8, specificity: 6, ownership: 8, reasoning: 7, communication: 7 },
-  nextQuestion: 'What was the biggest trade-off in your decision, and what would you do differently now?'
+  coachPlan: {
+    focus: 'Specificity',
+    why: 'The answer says the response time dropped, but an interviewer cannot tell how much it changed or why the fix mattered.',
+    drill: 'Retry the same answer and include one concrete before/after observation, even if it is approximate.',
+  },
+  nextQuestion: 'How did you verify that the index fixed the real bottleneck rather than just improving the demo case?',
+  retryPrompt: 'Retry this answer in under 90 seconds. Keep the same story, but make the result concrete and measurable.'
 };
 
 const demoAnswer = "I was working on a backend service for a college project when our database calls started timing out during a demo. I traced the issue to an inefficient query being executed repeatedly. I changed the query path, added an index, and tested the endpoint again. The response time dropped a lot and we finished the demo. If I did it again, I would add query monitoring earlier so we could catch the regression before the demo.";
@@ -32,6 +40,7 @@ const state = {
   index: 0,
   currentQuestion: questions[0].prompt,
   currentKind: questions[0].label,
+  answerMode: 'question',
   timer: 90,
   timerId: null,
   history: JSON.parse(localStorage.getItem('local-interview-coach-history') || '[]')
@@ -73,6 +82,7 @@ function renderQuestion() {
   const q = questions[state.index];
   state.currentQuestion = q.prompt;
   state.currentKind = q.label;
+  state.answerMode = 'question';
   $('questionKind').textContent = q.label;
   $('questionText').textContent = q.prompt;
   $('answerHint').textContent = q.hint;
@@ -95,10 +105,13 @@ function renderHistory() {
   const best = scores.length ? Math.max(...scores).toString() : '—';
   const recent = scores.slice(0, 3);
   const older = scores.slice(3, 6);
-  const trend = recent.length && older.length ? (recent.reduce((a,b)=>a+b,0)/recent.length - older.reduce((a,b)=>a+b,0)/older.length) : null;
+  const trend = recent.length && older.length
+    ? (recent.reduce((a, b) => a + b, 0) / recent.length - older.reduce((a, b) => a + b, 0) / older.length)
+    : null;
   $('avgScore').textContent = avg === '—' ? '—' : `${avg}/10`;
   $('bestScore').textContent = best === '—' ? '—' : `${best}/10`;
   $('trendScore').textContent = trend === null ? '—' : `${trend >= 0 ? '+' : ''}${trend.toFixed(1)}`;
+
   if (!state.history.length) {
     $('history').innerHTML = '<p class="history-empty">No answers yet. Start with one question above.</p>';
     return;
@@ -108,8 +121,9 @@ function renderHistory() {
     <article class="history-item">
       <div class="history-index">${String(state.history.length - i).padStart(2, '0')}</div>
       <div class="history-copy">
-        <div class="history-top"><strong>${escapeHtml(item.kind)}</strong><span>${item.score}/10</span></div>
+        <div class="history-top"><strong>${escapeHtml(item.kind)}</strong><span>${escapeHtml(item.score)}/10</span></div>
         <p>${escapeHtml(item.question)}</p>
+        ${item.focus ? `<p class="history-focus">Focus: ${escapeHtml(item.focus)}</p>` : ''}
       </div>
     </article>
   `).join('');
@@ -120,7 +134,7 @@ function updateCharCount() {
 }
 
 function escapeHtml(value) {
-  return String(value).replace(/[&<>'"]/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[ch]));
+  return String(value).replace(/[&<>'"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#039;', '"': '&quot;' }[ch]));
 }
 
 function showFeedback(data) {
@@ -132,6 +146,12 @@ function showFeedback(data) {
     ['Reasoning', rubric.reasoning],
     ['Communication', rubric.communication]
   ].filter(([, score]) => Number.isFinite(score));
+
+  const plan = data.coachPlan || {
+    focus: 'Specificity',
+    why: 'Make the next answer easier to verify.',
+    drill: 'Add one concrete result to your final sentence.'
+  };
 
   $('score').innerHTML = `<span>${escapeHtml(data.score)}</span>/10`;
   $('feedback').className = 'feedback-grid';
@@ -156,12 +176,49 @@ function showFeedback(data) {
         `).join('')}
       </div>
     </div>
-    <div class="next wide">
-      <h3>Next follow-up</h3>
-      <p>${escapeHtml(data.nextQuestion)}</p>
-      <div class="follow-up-actions"><button class="primary compact" id="followUpButton">Ask this follow-up</button></div>
+    <div class="wide next">
+      <h3>Your next 10 minutes</h3>
+      <p><strong>Focus:</strong> ${escapeHtml(plan.focus)}</p>
+      <p><strong>Why:</strong> ${escapeHtml(plan.why)}</p>
+      <p><strong>Drill:</strong> ${escapeHtml(plan.drill)}</p>
+      <div class="follow-up-actions">
+        <button class="primary compact" id="retryButton">Retry this answer</button>
+        <button class="ghost compact" id="followUpButton">Ask the follow-up</button>
+      </div>
     </div>
   `;
+
+  const retryButton = $('retryButton');
+  if (retryButton) {
+    retryButton.addEventListener('click', () => {
+      state.answerMode = 'retry';
+      $('questionKind').textContent = 'Retry';
+      $('questionText').textContent = state.currentQuestion;
+      $('answerHint').textContent = data.retryPrompt || `Retry this answer using the focus: ${plan.focus}`;
+      $('answer').value = '';
+      updateCharCount();
+      stopTimer(true);
+      $('answer').focus();
+      window.scrollTo({ top: document.querySelector('.question-card').offsetTop - 20, behavior: 'smooth' });
+    }, { once: true });
+  }
+
+  const followUpButton = $('followUpButton');
+  if (followUpButton) {
+    followUpButton.addEventListener('click', () => {
+      state.answerMode = 'follow-up';
+      state.currentQuestion = data.nextQuestion;
+      state.currentKind = 'Follow-up';
+      $('questionKind').textContent = 'Follow-up';
+      $('questionText').textContent = data.nextQuestion;
+      $('answerHint').textContent = 'This question was generated from your previous answer.';
+      $('answer').value = '';
+      updateCharCount();
+      stopTimer(true);
+      $('answer').focus();
+      window.scrollTo({ top: document.querySelector('.question-card').offsetTop - 20, behavior: 'smooth' });
+    }, { once: true });
+  }
 }
 
 async function checkHealth() {
@@ -199,7 +256,7 @@ async function reviewAnswer() {
     } else {
       const response = await fetch('http://localhost:8787/api/review', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           job: $('job').value.trim(),
           context: $('context').value.trim(),
@@ -218,27 +275,12 @@ async function reviewAnswer() {
       kind: state.currentKind,
       question: state.currentQuestion,
       score: data.score,
-      rubric: data.rubric || null
+      rubric: data.rubric || null,
+      focus: data.coachPlan?.focus || null
     });
     state.history = state.history.slice(0, 8);
     localStorage.setItem('local-interview-coach-history', JSON.stringify(state.history));
     renderHistory();
-
-    const followUpButton = $('followUpButton');
-    if (followUpButton) {
-      followUpButton.addEventListener('click', () => {
-        $('questionKind').textContent = 'Follow-up';
-        $('questionText').textContent = data.nextQuestion;
-        $('answerHint').textContent = 'This question was generated from your previous answer.';
-        state.currentQuestion = data.nextQuestion;
-        state.currentKind = 'Follow-up';
-        $('answer').value = '';
-        updateCharCount();
-        stopTimer(true);
-        $('answer').focus();
-        window.scrollTo({ top: document.querySelector('.question-card').offsetTop - 20, behavior: 'smooth' });
-      }, { once: true });
-    }
 
     document.querySelector('.feedback-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch (error) {
@@ -268,7 +310,6 @@ $('nextQuestion').addEventListener('click', () => {
 });
 
 $('reviewAnswer').addEventListener('click', reviewAnswer);
-
 $('answer').addEventListener('input', updateCharCount);
 
 $('loadDemo').addEventListener('click', () => {
@@ -281,6 +322,9 @@ $('exportSession').addEventListener('click', () => {
   const payload = {
     exportedAt: new Date().toISOString(),
     project: 'Local Interview Coach',
+    targetRole: $('job').value.trim(),
+    goal: $('context').value.trim(),
+    mode: document.body.dataset.mode || 'practice',
     attempts: state.history
   };
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
